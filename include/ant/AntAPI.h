@@ -1,0 +1,20 @@
+#ifdef ANT_STATIC
+#define ANT_API
+#endif
+
+#ifdef ANT_BUILD
+#define ANT_API ANT_API_EXPORT
+#else
+#define ANT_API ANT_API_IMPORT
+#endif
+
+#if defined(_WIN32) || defined(_WIN64)
+#define ANT_API_EXPORT __declspec(dllexport)
+#define ANT_API_IMPORT __declspec(dllimport)
+#elif defined(__GNUC__) || defined(__clang__)
+#define ANT_API_EXPORT __attribute__((visibility("default")))
+#define ANT_API_IMPORT
+#else
+#define ANT_API_EXPORT
+#define ANT_API_IMPORT
+#endif
