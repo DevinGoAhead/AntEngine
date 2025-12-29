@@ -1,3 +1,5 @@
+#pragma once
+
 #ifdef ANT_STATIC
 #define ANT_API
 #endif

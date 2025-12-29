@@ -1,4 +1,4 @@
-add_library(Ant SHARED Application.cpp)
+add_library(Ant SHARED Application.cpp Log.cpp Antpch.cpp )
 
 target_include_directories(Ant 
     PUBLIC 
