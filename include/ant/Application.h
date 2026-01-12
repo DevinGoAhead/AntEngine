@@ -1,9 +1,9 @@
 #pragma once
-#include "Antpch.h"
 
+#include "Core.h"
 #include "memory"
 
-namespace AT {
+namespace AE {
 class ANT_API Application {
    public:
     Application() = default;
@@ -13,4 +13,4 @@ class ANT_API Application {
 
 // Implementation in client
 std::unique_ptr<Application> CreateApplication();
-}  // namespace AT
+}  // namespace AE

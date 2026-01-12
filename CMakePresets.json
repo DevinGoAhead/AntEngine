@@ -2,38 +2,125 @@
     "version": 5,
     "configurePresets": [
         {
-            "name": "linux-debug",
-            "displayName": "Linux Clang Debug",
+            "name": "base",
+            "hidden": true,
             "generator": "Ninja",
-            "binaryDir": "${sourceDir}/build/debug",
+            "binaryDir": "${sourceDir}/build/${hostSystemName}/${presetName}",
             "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Debug",
-                "CMAKE_C_COMPILER": "clang",
-                "CMAKE_CXX_COMPILER": "clang++",
                 "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
             }
         },
         {
-            "name": "linux-release",
-            "displayName": "Linux Clang Release",
-            "generator": "Ninja",
-            "binaryDir": "${sourceDir}/build/release",
+            "name": "linux-clang-debug",
+            "inherits": "base",
+            "displayName": "Linux Clang Debug",
             "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Release",
+                "CMAKE_BUILD_TYPE": "Debug",
                 "CMAKE_C_COMPILER": "clang",
                 "CMAKE_CXX_COMPILER": "clang++",
-                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+                "CMAKE_PREFIX_PATH": "$env{HOME}/.local",
+                "ANT_WARNINGS": "ON",
+                "ANT_WERROR": "OFF",
+                "ANT_SANITIZE": "OFF",
+                "ANT_LTO": "OFF",
+                "ANT_DIST": "OFF",
+                "ANT_LOGGING": "ON"
+            }
+        },
+        {
+            "name": "linux-clang-release",
+            "inherits": "linux-clang-debug",
+            "displayName": "Linux Clang Release",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "ANT_WERROR": "OFF",
+                "ANT_LOGGING": "OFF"
+            }
+        },
+        {
+            "name": "linux-clang-dist",
+            "inherits": "linux-clang-debug",
+            "displayName": "Linux Clang Dist",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "ANT_DIST": "ON",
+                "ANT_LTO": "ON",
+                "ANT_SANITIZE": "OFF",
+                "ANT_LOGGING": "OFF"
+            }
+        },
+        {
+            "name": "linux-clang-asan",
+            "inherits": "linux-clang-debug",
+            "displayName": "Linux Clang Debug (ASan+UBSan)",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "ANT_SANITIZE": "address,undefined",
+                "ANT_LOGGING": "OFF"
+            }
+        },
+        {
+            "name": "linux-clang-relwithdebinfo",
+            "inherits": "linux-clang-debug",
+            "displayName": "Linux Clang RelWithDebInfo",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+                "ANT_LOGGING": "ON"
+            }
+        },
+        {
+            "name": "windows-msvc-debug",
+            "inherits": "base",
+            "displayName": "Windows MSVC Debug",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_PREFIX_PATH": "D:/.local",
+                "ANT_WARNINGS": "ON",
+                "ANT_WERROR": "OFF",
+                "ANT_SANITIZE": "OFF",
+                "ANT_LTO": "OFF",
+                "ANT_DIST": "OFF",
+                "ANT_LOGGING": "ON"
+            }
+        },
+        {
+            "name": "windows-msvc-release",
+            "inherits": "windows-msvc-debug",
+            "displayName": "Windows MSVC Release",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "ANT_LOGGING": "OFF"
             }
         }
     ],
     "buildPresets": [
         {
-            "name": "debug",
-            "configurePreset": "linux-debug"
+            "name": "linux-debug",
+            "configurePreset": "linux-clang-debug"
         },
         {
-            "name": "release",
-            "configurePreset": "linux-release"
+            "name": "linux-release",
+            "configurePreset": "linux-clang-release"
+        },
+        {
+            "name": "linux-dist",
+            "configurePreset": "linux-clang-dist"
+        },
+        {
+            "name": "linux-asan",
+            "configurePreset": "linux-clang-asan"
+        },
+        {
+            "name": "linux-rwdi",
+            "configurePreset": "linux-clang-relwithdebinfo"
+        },
+        {
+            "name": "win-debug",
+            "configurePreset": "windows-msvc-debug"
+        },
+        {
+            "name": "win-release",
+            "configurePreset": "windows-msvc-release"
         }
     ]
 }

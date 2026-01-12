@@ -1,14 +1,16 @@
 #pragma once
 
 #include "Application.h"
-#include "ant/Log.h"
+#include "Log.h"
 
-extern std::unique_ptr<AT::Application> AT::CreateApplication();
+//extern std::unique_ptr<AE::Application> AE::CreateApplication();
 
 int main(){
-    AT::Log::init();
-    auto app = AT::CreateApplication();
+    AE::Log::init();
+    auto app = AE::CreateApplication();
+     ANT_LOG_CORE_TRACE("trace information");
+    ANT_LOG_INFO("INFO information");
     app->Run();
-    ANT_CORE_TRACE("trace information");
-    ANT_INFO("INFO information");
+    ANT_LOG_CORE_TRACE("trace information");
+    ANT_LOG_INFO("INFO information");
 }

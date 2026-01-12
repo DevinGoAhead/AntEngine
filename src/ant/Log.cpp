@@ -1,8 +1,7 @@
 #include "ant/Log.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
-#include "spdlog/sinks/basic_file_sink.h"
 
-namespace AT{
+namespace AE{
     void Log::init(){
         spdlog::set_pattern("%^[%T] %n: %v%$");
         coreLogger = spdlog::stdout_color_mt("Ant");

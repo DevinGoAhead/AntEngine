@@ -1,8 +1,7 @@
 #include "ant/Application.h"
 #include <iostream>
-#include <thread>
 
-namespace AT{
+namespace AE{
     void Application::Run(){
         int i = 0;
         while(true){

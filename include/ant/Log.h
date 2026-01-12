@@ -1,12 +1,12 @@
 #pragma once
 
-#include "Antpch.h"
+#include "Core.h"
 
 #include <spdlog/spdlog.h>
 
 #include <memory>
 
-namespace AT {
+namespace AE {
 class ANT_API Log {
    public:
     static void init();
@@ -23,42 +23,43 @@ class ANT_API Log {
     inline static std::shared_ptr<spdlog::logger> coreLogger;
     inline static std::shared_ptr<spdlog::logger> clientLogger;
 };
-}  // namespace AT
+}  // namespace AE
 
-#ifdef _DEBUG
 
-#define ANT_CORE_TRACE(...)            \
-    ::AT::Log::GetCoreLogger()->trace( \
-        __VA_ARGS__) /* ::AT 直接在全局命名空间查找 */
-#define ANT_CORE_DEBUG(...) ::AT::Log::GetCoreLogger()->debug(__VA_ARGS__)
-#define ANT_CORE_INFO(...) ::AT::Log::GetCoreLogger()->info(__VA_ARGS__)
-#define ANT_CORE_WARN(...) ::AT::Log::GetCoreLogger()->warn(__VA_ARGS__)
-#define ANT_CORE_ERROR(...) ::AT::Log::GetCoreLogger()->error(__VA_ARGS__)
-#define ANT_CORE_CRITICAL(...) ::AT::Log::GetCoreLogger()->critical(__VA_ARGS__)
+#if defined ANT_ENABLE_LOG /* 定义了并且值非0 */
+
+#define ANT_LOG_CORE_TRACE(...)            \
+    ::AE::Log::GetCoreLogger()->trace( \
+        __VA_ARGS__) /* ::AE 直接在全局命名空间查找 */
+#define ANT_LOG_CORE_DEBUG(...) ::AE::Log::GetCoreLogger()->debug(__VA_ARGS__)
+#define ANT_LOG_CORE_INFO(...) ::AE::Log::GetCoreLogger()->info(__VA_ARGS__)
+#define ANT_LOG_CORE_WARN(...) ::AE::Log::GetCoreLogger()->warn(__VA_ARGS__)
+#define ANT_LOG_CORE_ERROR(...) ::AE::Log::GetCoreLogger()->error(__VA_ARGS__)
+#define ANT_LOG_CORE_CRITICAL(...) ::AE::Log::GetCoreLogger()->critical(__VA_ARGS__)
 
 #define ANT_TRACE(...)                   \
-    ::AT::Log::GetClientLogger()->trace( \
-        __VA_ARGS__) /* ::AT 直接在全局命名空间查找 */
-#define ANT_DEBUG(...) ::AT::Log::GetClientLogger()->debug(__VA_ARGS__)
-#define ANT_INFO(...) ::AT::Log::GetClientLogger()->info(__VA_ARGS__)
-#define ANT_WARN(...) ::AT::Log::GetClientLogger()->warn(__VA_ARGS__)
-#define ANT_ERROR(...) ::AT::Log::GetClientLogger()->error(__VA_ARGS__)
-#define ANT_CRITICAL(...) ::AT::Log::GetClientLogger()->critical(__VA_ARGS__)
+    ::AE::Log::GetClientLogger()->trace( \
+        __VA_ARGS__) /* ::AE 直接在全局命名空间查找 */
+#define ANT_LOG_DEBUG(...) ::AE::Log::GetClientLogger()->debug(__VA_ARGS__)
+#define ANT_LOG_INFO(...) ::AE::Log::GetClientLogger()->info(__VA_ARGS__)
+#define ANT_LOG_WARN(...) ::AE::Log::GetClientLogger()->warn(__VA_ARGS__)
+#define ANT_LOG_ERROR(...) ::E::Log::GetClientLogger()->error(__VA_ARGS__)
+#define ANT_LOG_CRITICAL(...) ::AE::Log::GetClientLogger()->critical(__VA_ARGS__)
 
-#elif
+#else
 
-#define ANT_CORE_TRACE(...)
-#define ANT_CORE_DEBUG(...)
-#define ANT_CORE_INFO(...)
-#define ANT_CORE_WARN(...)
-#define ANT_CORE_ERROR(...)
-#define ANT_CORE_CRITICAL(...)
+#define ANT_LOG_CORE_TRACE(...)
+#define ANT_LOG_CORE_DEBUG(...)
+#define ANT_LOG_CORE_INFO(...)
+#define ANT_LOG_CORE_WARN(...)
+#define ANT_LOG_CORE_ERROR(...)
+#define ANT_LOG_CORE_CRITICAL(...)
 
-#define ANT_TRACE(...)
-#define ANT_DEBUG(...)
-#define ANT_INFO(...)
-#define ANT_WARN(...)
-#define ANT_ERROR(...)
-#define ANT_CRITICAL(...)
+#define ANT_LOG_TRACE(...)
+#define ANT_LOG_DEBUG(...)
+#define ANT_LOG_INFO(...)
+#define ANT_LOG_WARN(...)
+#define ANT_LOG_ERROR(...)
+#define ANT_LOG_CRITICAL(...)
 
 #endif

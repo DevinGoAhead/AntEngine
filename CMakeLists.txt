@@ -4,19 +4,77 @@ project(AntEngine VERSION 1.0.0 LANGUAGES C CXX)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    add_definitions(-D_DEBUG)
-endif()
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin/$<CONFIG>-${CMAKE_SYSTEM_NAME}-${CMAKE_SYSTEM_PROCESSOR}/") # 可执行程序
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin/$<CONFIG>-${CMAKE_SYSTEM_NAME}-${CMAKE_SYSTEM_PROCESSOR}/") # shared lib
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/lib/$<CONFIG>-${CMAKE_SYSTEM_NAME}-${CMAKE_SYSTEM_PROCESSOR}/") # static lib + win 动态库配套的 import lib
 
+option(ANT_WARNINGS "Enable common compiler warnings" ON)
+option(ANT_WERROR "Treat warnings as errors" OFF)
+set(ANT_SANITIZE "OFF" CACHE STRING "Sanitizers: OFF or comma list (address,undefined,thread,leak)")
+option(ANT_LTO "Enable Link Time Optimization" OFF)
+option(ANT_DIST "Enable distribution mode" OFF)
+option(ANT_LOGGING "Enable logging macros" OFF)
 
-# ========================
+function(ant_apply_options target_name)
+  if (ANT_WARNINGS)
+    if (MSVC)
+      target_compile_options(${target_name} PRIVATE /W4)
+    else()
+      target_compile_options(${target_name} PRIVATE -Wall -Wextra -Wpedantic)
+    endif()
+  endif()
+
+  if (ANT_WERROR)
+    if (MSVC)
+      target_compile_options(${target_name} PRIVATE /WX)
+    else()
+      target_compile_options(${target_name} PRIVATE -Werror)
+    endif()
+  endif()
+
+  # Sanitizers（只对 clang/gcc）
+  if (NOT ANT_SANITIZE STREQUAL "OFF")
+    if (MSVC)
+      message(WARNING "Sanitizers via ANT_SANITIZE are not enabled for MSVC in this template.")
+    else()
+      # 允许 ANT_SANITIZE="address,undefined"
+      # list: 本质是 ; 分隔的字符串
+      string(REPLACE "," ";" _san_list "${ANT_SANITIZE}")
+      string(JOIN "," _san_csv ${_san_list})
+
+      target_compile_options(${target_name} PRIVATE -fsanitize=${_san_csv} -fno-omit-frame-pointer)
+      target_link_options(${target_name} PRIVATE -fsanitize=${_san_csv})
+    endif()
+  endif()
+
+  # LTO（跨平台方式：CMake 原生）
+  if (ANT_LTO)
+    include(CheckIPOSupported)
+    check_ipo_supported(RESULT _ipo_ok OUTPUT _ipo_msg)
+    if (_ipo_ok)
+      set_property(TARGET ${target_name} PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
+    else()
+      message(WARNING "IPO/LTO not supported: ${_ipo_msg}")
+    endif()
+  endif()
+endfunction()
+
+function(ant_add_definitions target_name)
+  # 是否启用日志打印
+  if(ANT_LOGGING)
+    target_compile_definitions(${target_name} PUBLIC ANT_ENABLE_LOG)
+  else()
+    message(WARNING "ANT_LOGGING: ${ANT_LOGGING}")
+  endif()
+endfunction()
+
 #   Dependencies
 # ========================
-
 find_package(spdlog CONFIG REQUIRED)
 
-add_library(SPDLOG INTERFACE)
-target_link_libraries(SPDLOG INTERFACE spdlog::spdlog)
+add_library(AntDeps INTERFACE)
+target_link_libraries(AntDeps INTERFACE spdlog::spdlog)
 
 add_subdirectory(src/ant)
 add_subdirectory(src/sandbox)
+

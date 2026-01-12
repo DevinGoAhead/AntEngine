@@ -1,4 +1,4 @@
-add_library(Ant SHARED Application.cpp Log.cpp Antpch.cpp )
+add_library(Ant SHARED Application.cpp Log.cpp)
 
 target_include_directories(Ant 
     PUBLIC 
@@ -6,8 +6,15 @@ target_include_directories(Ant
 
 target_link_libraries(Ant 
     PRIVATE 
-        SPDLOG)
+        AntDeps)
 
 target_compile_definitions(Ant 
     PRIVATE
-        ANT_BUILD)
+        ANT_BUIL
+    PUBLIC
+        $<$<CONFIG:Debug>:ANT_DEBUG>
+        $<$<CONFIG:Release>:ANT_RELEASE>
+)
+
+ant_apply_options(Ant)
+ant_add_definitions(Ant)
