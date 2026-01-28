@@ -18,13 +18,13 @@
                 "CMAKE_BUILD_TYPE": "Debug",
                 "CMAKE_C_COMPILER": "clang",
                 "CMAKE_CXX_COMPILER": "clang++",
-                "CMAKE_PREFIX_PATH": "$env{HOME}/.local",
                 "ANT_WARNINGS": "ON",
                 "ANT_WERROR": "OFF",
                 "ANT_SANITIZE": "OFF",
                 "ANT_LTO": "OFF",
                 "ANT_DIST": "OFF",
-                "ANT_LOGGING": "ON"
+                "ANT_LOGGING": "ON",
+                "ANT_ASSERTING": "ON"
             }
         },
         {
@@ -34,7 +34,8 @@
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release",
                 "ANT_WERROR": "OFF",
-                "ANT_LOGGING": "OFF"
+                "ANT_LOGGING": "OFF",
+                "ANT_ASSERTING": "OFF"
             }
         },
         {
@@ -46,7 +47,8 @@
                 "ANT_DIST": "ON",
                 "ANT_LTO": "ON",
                 "ANT_SANITIZE": "OFF",
-                "ANT_LOGGING": "OFF"
+                "ANT_LOGGING": "OFF",
+                "ANT_ASSERTING": "OFF"
             }
         },
         {
@@ -56,7 +58,8 @@
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Debug",
                 "ANT_SANITIZE": "address,undefined",
-                "ANT_LOGGING": "OFF"
+                "ANT_LOGGING": "OFF",
+                "ANT_ASSERTING": "OFF"
             }
         },
         {
@@ -65,7 +68,8 @@
             "displayName": "Linux Clang RelWithDebInfo",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "RelWithDebInfo",
-                "ANT_LOGGING": "ON"
+                "ANT_LOGGING": "ON",
+                "ANT_ASSERTING": "OFF"
             }
         },
         {
@@ -74,13 +78,13 @@
             "displayName": "Windows MSVC Debug",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Debug",
-                "CMAKE_PREFIX_PATH": "D:/.local",
                 "ANT_WARNINGS": "ON",
                 "ANT_WERROR": "OFF",
                 "ANT_SANITIZE": "OFF",
                 "ANT_LTO": "OFF",
                 "ANT_DIST": "OFF",
-                "ANT_LOGGING": "ON"
+                "ANT_LOGGING": "ON",
+                "ANT_ASSERTING": "ON"
             }
         },
         {
@@ -89,7 +93,8 @@
             "displayName": "Windows MSVC Release",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release",
-                "ANT_LOGGING": "OFF"
+                "ANT_LOGGING": "OFF",
+                "ANT_ASSERTING": "OFF"
             }
         }
     ],

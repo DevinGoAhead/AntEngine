@@ -1,16 +1,19 @@
-add_library(Ant SHARED Application.cpp Log.cpp)
+add_library(Ant Application.cpp Log.cpp window.cpp)
 
 target_include_directories(Ant 
     PUBLIC 
         ${PROJECT_SOURCE_DIR}/include)
 
 target_link_libraries(Ant 
-    PRIVATE 
-        AntDeps)
+    PUBLIC 
+        AntDeps
+        AntGLFW
+        Platform
+)
 
 target_compile_definitions(Ant 
     PRIVATE
-        ANT_BUIL
+        ANT_STATIC
     PUBLIC
         $<$<CONFIG:Debug>:ANT_DEBUG>
         $<$<CONFIG:Release>:ANT_RELEASE>

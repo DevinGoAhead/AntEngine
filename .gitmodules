@@ -1,0 +1,9 @@
+[submodule "vender/glfw"]
+	path = vender/glfw
+	url = https://github.com/DevinGoAhead/glfw.git
+[submodule "vender/spdlog"]
+	path = vender/spdlog
+	url = https://github.com/DevinGoAhead/spdlog.git
+[submodule "vendor/glfw"]
+	path = vendor/glfw
+	url = https://github.com/glfw/glfw.git

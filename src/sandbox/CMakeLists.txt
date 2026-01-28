@@ -3,12 +3,11 @@ add_executable(Sandbox SandboxApp.cpp)
 target_link_libraries(Sandbox 
     PRIVATE    
         Ant
-        AntDeps
 )
 
 target_compile_definitions(Sandbox 
     PRIVATE
-        ANT_BUILD
+        ANT_STATIC
     PUBLIC
         $<$<CONFIG:Debug>:ANT_DEBUG>
         $<$<CONFIG:Release>:ANT_RELEASE>

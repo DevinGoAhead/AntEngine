@@ -58,7 +58,7 @@ class MouseButtonEvent : public Event {
 
 class MouseButtonPressed : public MouseButtonEvent {
    public:
-    using MouseButtonEvent::MouseButtonEvent;
+    MouseButtonPressed(int inButtonCode) : MouseButtonEvent(inButtonCode) {}
     CLASS_EVENT_TYPE(EventType::MouseButtonPressed)
 
     std::string ToString() const override {
@@ -68,7 +68,7 @@ class MouseButtonPressed : public MouseButtonEvent {
 
 class MouseButtonReleased : public MouseButtonEvent {
    public:
-    using MouseButtonEvent::MouseButtonEvent;
+    MouseButtonReleased(int inButtonCode) : MouseButtonEvent(inButtonCode) {}
     CLASS_EVENT_TYPE(EventType::MouseButtonReleased)
 
     std::string ToString() const override {

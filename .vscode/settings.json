@@ -2,4 +2,5 @@
 	"cmake.configureOnOpen": true,
 	"editor.fontFamily": "'JetBrains Mono NL Regular', 'JetBrains Mono'",
 	"editor.tabSize": 4,
+	"editor.fontSize": 15
 }

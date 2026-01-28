@@ -11,3 +11,5 @@ python3 SyCC.py --preset linux-clang-debug
 # windows-msvc-debug -- preset name
 python SyCC.py --preset windows-msvc-debug
 ```
+
+如果是 linux 平台, 则根据自己的配置设置根 CMakeLists.txt 中 GLFW_BUILD_X11 变量的值

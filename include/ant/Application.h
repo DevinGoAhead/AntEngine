@@ -1,14 +1,29 @@
 #pragma once
 
-#include "Core.h"
-#include "memory"
+#include "ant/Core.h"
+#include "ant/Window.h"
+
+#include <memory>
 
 namespace AE {
+
+class WindowCloseEvent;
+class WindowResizeEvent;
+
 class ANT_API Application {
    public:
-    Application() = default;
+    Application();
     virtual ~Application() = default;
     void Run();
+
+   private:
+    void OnEvent(Event& event);
+    bool OnWindowClose(WindowCloseEvent& windowCloseEvent);
+    bool OnWindowResize(WindowResizeEvent& windowResizeEvent);
+
+   private:
+    bool isRunning = true;
+    std::unique_ptr<Window> window;
 };
 
 // Implementation in client

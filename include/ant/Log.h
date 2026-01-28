@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Core.h"
+#include "ant/Core.h"
 
 #include <spdlog/spdlog.h>
 
@@ -12,6 +12,7 @@ class ANT_API Log {
     static void init();
 
     inline static std::shared_ptr<spdlog::logger>& GetCoreLogger() {
+        //coreLogger->error()
         return coreLogger;
     }
 
@@ -26,7 +27,7 @@ class ANT_API Log {
 }  // namespace AE
 
 
-#if defined ANT_ENABLE_LOG /* 定义了并且值非0 */
+#if defined ANT_ENABLE_LOG
 
 #define ANT_LOG_CORE_TRACE(...)            \
     ::AE::Log::GetCoreLogger()->trace( \

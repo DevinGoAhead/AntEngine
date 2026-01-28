@@ -54,6 +54,8 @@ enum Type {
 
 class ANT_API Event {
    public:
+    Event() = default;
+    virtual ~Event() = default;
     virtual EventType GetEventType() const = 0;
     virtual std::string_view GetTypeName() const = 0;
     virtual int GetEventCategory() const = 0;
@@ -69,14 +71,14 @@ class ANT_API EventDispatcher {
     EventDispatcher(Event& inEvent) : event(inEvent) {}
 
     template <typename EventT, typename CallbackT>
-    bool Dispatch() {
+    bool Dispatch(CallbackT Func) {
         /**
          * event 需要引用一个对象, class Event 不可能被实例化, 自然 event 引用的一定是 class Event 的子类
          * EventT::GetStaticType() 确保 EventT 是 Event 的子类类型并且实现了 GetStaticType(), 否则编译报错
          * == 则确保二者类型一致, 确保后续的 static_cast 是安全的
          */
         if (event.GetEventType() == EventT::GetStaticType()) {
-            event.bHandled |= CallbackT(static_cast<EventT&>(event));
+            event.bHandled |= Func(static_cast<EventT&>(event));
             return true;
         }
         return false;

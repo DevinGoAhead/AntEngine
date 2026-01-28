@@ -4,6 +4,7 @@
 #include "format"
 
 namespace AE {
+// Abstract
 class ANT_API KeyEvent : public Event {
    protected:
     KeyEvent(int inKeyCode) : keyCode(inKeyCode) {}
@@ -16,7 +17,8 @@ class ANT_API KeyEvent : public Event {
 
 class ANT_API KeyPressedEvent : public KeyEvent {
    public:
-    using KeyEvent::KeyEvent;
+    KeyPressedEvent(int inKeyCode, bool inIsRepeat)
+        : KeyEvent(inKeyCode), isRepeat(inIsRepeat) {}
 
     std::string ToString() const override {
         return std::format("Key: [{}] is pressed, Repeat: [{}]", keyCode,
@@ -31,7 +33,7 @@ class ANT_API KeyPressedEvent : public KeyEvent {
 
 class ANT_API KeyReleasedEvent : public KeyEvent {
    public:
-    using KeyEvent::KeyEvent;
+    KeyReleasedEvent(int inKeyCode) : KeyEvent(inKeyCode) {}
 
     std::string ToString() const override {
         return std::format("Key: [{}] is released", keyCode);

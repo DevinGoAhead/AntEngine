@@ -13,11 +13,9 @@
 #endif
 
 
-#ifdef ANT_STATIC
+#if defined ANT_STATIC
   #define ANT_API
-#endif
-
-#ifdef ANT_BUILD
+#elif defined(ANT_BUILD)
     #define ANT_API ANT_API_EXPORT
 #else
     #define ANT_API ANT_API_IMPORT

@@ -4,7 +4,7 @@
 class ANT_API SandboxApp : public AE::Application{
 public:
     SandboxApp() = default;
-    virtual ~SandboxApp() = default;
+    ~SandboxApp() override = default ;
 };
 
 
