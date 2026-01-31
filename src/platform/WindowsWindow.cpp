@@ -1,4 +1,4 @@
-#include "ant/platform/WindowWindow.h"
+#include "platform/WindowsWindow.h"
 #include "ant/AntPCH.h"
 #include "ant/event/EventApplication.hpp"
 #include "ant/event/KeyEvent.hpp"
@@ -9,12 +9,12 @@
 namespace AE {
 static bool isGLFW_Initialized = false;
 
-WindowWindow::WindowWindow(const WindowProp &winProp){
+WindowsWindow::WindowsWindow(const WindowProp &winProp){
     Initial(winProp);
 }
 
 // NOLINTNEXTLINE(readability-function-cognitive-complexity)
-void WindowWindow::Initial(const WindowProp& winProp) {
+void WindowsWindow::Initial(const WindowProp& winProp) {
     data.width = winProp.width;
     data.height = winProp.height;
     data.title = winProp.title;
@@ -136,10 +136,10 @@ void WindowWindow::Initial(const WindowProp& winProp) {
     });
 }
 
- void WindowWindow::SetEventCallback(const EventCallback& callback){
+ void WindowsWindow::SetEventCallback(const EventCallback& callback){
     data.eventCallback = callback;
  }
-void WindowWindow::SetVSync(bool enable) {
+void WindowsWindow::SetVSync(bool enable) {
     if (enable) {
         glfwSwapInterval(1);
     } else {
@@ -148,12 +148,12 @@ void WindowWindow::SetVSync(bool enable) {
     data.isVSync = enable;
 }
 
-void WindowWindow::OnUpdate() {
+void WindowsWindow::OnUpdate() {
     glfwPollEvents();
     glfwSwapBuffers(window);
 }
 
-void WindowWindow::ShutDown() {
+void WindowsWindow::ShutDown() {
     glfwTerminate();
 }
 }  // namespace AE

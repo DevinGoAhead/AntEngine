@@ -1,4 +1,84 @@
+# ========================
+# Build / Output
+# ========================
 build/
-.cache/
-output/
 bin/
+lib/
+output/
+.cache/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+compile_commands.json
+Testing/
+
+# ========================
+# CMake Presets / Ninja
+# ========================
+*.ninja
+*.ninja_deps
+*.ninja_log
+
+# ========================
+# Object / Binary
+# ========================
+*.o
+*.obj
+*.a
+*.so
+*.dll
+*.lib
+*.exe
+*.pdb
+*.ilk
+*.exp
+
+# ========================
+# Logs / Dumps
+# ========================
+*.log
+*.tmp
+*.bak
+*.swp
+*.stackdump
+core
+vgcore.*
+
+# ========================
+# IDE / Editor
+# ========================
+.vscode/
+.idea/
+.clangd/
+.clang-tidy/
+.clang-format
+*.user
+*.suo
+*.VC.db
+
+# ========================
+# OS
+# ========================
+.DS_Store
+Thumbs.db
+
+# ========================
+# Python
+# ========================
+__pycache__/
+*.pyc
+
+# ========================
+# Archives / Packages
+# ========================
+*.zip
+*.7z
+*.tar
+*.tar.gz
+
+# ========================
+# Generated assets (optional)
+# ========================
+# shaders/compiled/
+# assets/cache/
+

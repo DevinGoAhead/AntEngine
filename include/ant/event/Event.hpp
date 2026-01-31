@@ -1,12 +1,13 @@
 #pragma once
 
-#include <string>
 #include "ant/Core.h"
 #include "ant/Log.h"
+#include <cstdint>
+#include "ant/AntPCH.h"
 
 namespace AE {
 
-enum class EventType {
+enum class EventType : std::uint8_t {
     None = 0,
     WindowClose,
     WindowResize,
@@ -26,7 +27,7 @@ enum class EventType {
 };
 
 namespace EventCategory {
-enum Type {
+enum Type : std::uint8_t {
     None = 0,
     EventCategoryApplication = BIT(0),
     EventCategoryInput = BIT(1),

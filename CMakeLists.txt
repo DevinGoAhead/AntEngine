@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.26)
 project(AntEngine VERSION 1.0.0 LANGUAGES C CXX)
 
-set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin/$<CONFIG>-${CMAKE_SYSTEM_NAME}-${CMAKE_SYSTEM_PROCESSOR}/") # 可执行程序
@@ -88,7 +88,6 @@ set(GLFW_INSTALL OFF CACHE BOOL "Generate installation target")
 
 add_subdirectory(src/ant)
 add_subdirectory(src/sandbox)
-add_subdirectory(src/platform)
 add_subdirectory(vendor/spdlog)
 add_subdirectory(vendor/glfw)
 

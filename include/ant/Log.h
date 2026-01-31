@@ -11,12 +11,12 @@ class ANT_API Log {
    public:
     static void init();
 
-    inline static std::shared_ptr<spdlog::logger>& GetCoreLogger() {
+    static std::shared_ptr<spdlog::logger>& GetCoreLogger() {
         //coreLogger->error()
         return coreLogger;
     }
 
-    inline static std::shared_ptr<spdlog::logger>& GetClientLogger() {
+    static std::shared_ptr<spdlog::logger>& GetClientLogger() {
         return clientLogger;
     }
 

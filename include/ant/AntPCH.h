@@ -16,7 +16,8 @@
 #include <iostream>
 #include <memory>
 #include <utility>
-#include "format"
+#include <format>
+#include <ranges>
 
 #include <array>
 #include <sstream>

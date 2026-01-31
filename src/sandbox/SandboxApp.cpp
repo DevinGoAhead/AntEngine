@@ -1,7 +1,6 @@
-#include "ant/Application.h"
-#include "ant/EntryPoint.h" // IWYU pragma: keep
+#include "ant/Ant.h"
 
-class ANT_API SandboxApp : public AE::Application{
+class SandboxApp : public AE::Application{
 public:
     SandboxApp() = default;
     ~SandboxApp() override = default ;

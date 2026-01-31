@@ -8,11 +8,11 @@
 
 namespace AE {
 struct WindowProp {
-    uint32_t width;
-    uint32_t height;
+    std::uint32_t width;
+    std::uint32_t height;
     std::string title;
 
-    WindowProp(uint32_t inWidth = 1280., uint32_t inHeight = 1024.,
+    WindowProp(std::uint32_t inWidth = 1280., std::uint32_t inHeight = 1024.,
                std::string inTitle = "Ant Engine")
         : width(inWidth), height(inHeight), title(std::move(inTitle)) {}
 };
@@ -30,11 +30,11 @@ class Window {
     virtual void ShutDown() = 0;
 
     virtual bool IsVSync() = 0;
-    virtual uint32_t GetWidth() = 0;
-    virtual uint32_t GetHeight() = 0;
+    virtual std::uint32_t GetWidth() = 0;
+    virtual std::uint32_t GetHeight() = 0;
     virtual std::string GetTitle() = 0;
 
-    static std::unique_ptr<Window> CreateWindow(
+    static std::unique_ptr<Window> CreateAEWindow(
         const WindowProp& winProp);  // Factory
 };
 }  // namespace AE

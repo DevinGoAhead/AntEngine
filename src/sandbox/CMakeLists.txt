@@ -5,12 +5,4 @@ target_link_libraries(Sandbox
         Ant
 )
 
-target_compile_definitions(Sandbox 
-    PRIVATE
-        ANT_STATIC
-    PUBLIC
-        $<$<CONFIG:Debug>:ANT_DEBUG>
-        $<$<CONFIG:Release>:ANT_RELEASE>
-)
-
 #ant_apply_options(Sandbox)

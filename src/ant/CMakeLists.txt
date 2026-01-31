@@ -1,4 +1,12 @@
-add_library(Ant Application.cpp Log.cpp window.cpp)
+add_library(Ant
+    SHARED 
+        Application.cpp
+        Log.cpp
+        Window.cpp
+        Layer.cpp
+        LayerStack.cpp
+        ${PROJECT_SOURCE_DIR}/src/platform/WindowsWindow.cpp
+)
 
 target_include_directories(Ant 
     PUBLIC 
@@ -8,15 +16,11 @@ target_link_libraries(Ant
     PUBLIC 
         AntDeps
         AntGLFW
-        Platform
 )
 
 target_compile_definitions(Ant 
     PRIVATE
-        ANT_STATIC
-    PUBLIC
-        $<$<CONFIG:Debug>:ANT_DEBUG>
-        $<$<CONFIG:Release>:ANT_RELEASE>
+        ANT_BUILD
 )
 
 ant_apply_options(Ant)

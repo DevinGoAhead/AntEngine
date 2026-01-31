@@ -1,6 +1,9 @@
 #include "ant/Application.h"
-#include <GLFW/glfw3.h>
+#include "ant/AntPCH.h"
+#include "ant/Layer.h"
 #include "ant/event/EventApplication.hpp"
+
+#include <GLFW/glfw3.h>
 
 #define ANT_BIND_EVENT_FN(fn)                                   \
     [this](auto&&... args) -> decltype(auto) {                  \
@@ -9,8 +12,31 @@
 
 namespace AE {
 Application::Application() {
-    window = Window::CreateWindow({});
+    window = AE::Window::CreateAEWindow({});
     window->SetEventCallback(ANT_BIND_EVENT_FN(OnEvent));
+}
+
+void Application::Run() {
+    while (isRunning) {
+        glClearColor(0.2, 0.5, 0.8, 1.);
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        for(const auto& layer : layerStack){
+            layer->OnUpdate();
+        }
+
+        if (window) {
+            window->OnUpdate();
+        }
+    }
+}
+
+void Application::AddStage(Layer* stage) {
+    layerStack.AddStage(stage);
+}
+
+void Application::AddOverlay(Layer* overlay) {
+    layerStack.AddOverlay(overlay);
 }
 
 void Application::OnEvent(Event& event) {
@@ -20,6 +46,13 @@ void Application::OnEvent(Event& event) {
     eventDispather.Dispatch<WindowCloseEvent>(ANT_BIND_EVENT_FN(OnWindowClose));
     eventDispather.Dispatch<WindowResizeEvent>(
         ANT_BIND_EVENT_FN(OnWindowResize));
+
+    for (AE::Layer* layer : layerStack | std::views::reverse) {
+        if (event.bHandled) {
+            break;
+        }
+        layer->OnEvent(event);
+    }
 }
 
 bool Application::OnWindowClose(
@@ -36,13 +69,4 @@ bool Application::OnWindowResize(WindowResizeEvent& windowResizeEvent) {
     return true;
 }
 
-void Application::Run() {
-    while (isRunning) {
-        glClearColor(0.2, 0.5, 0.8, 1.);
-        glClear(GL_COLOR_BUFFER_BIT);
-        if (window) {
-            window->OnUpdate();
-        }
-    }
-}
 }  // namespace AE
