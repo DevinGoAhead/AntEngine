@@ -1,8 +1,8 @@
 #pragma once
 
 #include "ant/Core.h"
-#include "ant/Window.h"
 #include "ant/LayerStack.h"
+#include "ant/Window.h"
 
 #include <memory>
 
@@ -14,11 +14,17 @@ class Layer;
 
 class ANT_API Application {
    public:
-    Application();
+    Application(const Application& other) = delete;
+    Application& operator=(const Application& other) = delete; 
+    virtual ~Application() = default;
+
     void AddStage(Layer* stage);
     void AddOverlay(Layer* overlay);
-    virtual ~Application() = default;
     void Run();
+    const Window& GetWidnow() const {return *window;}
+    static const Application* Get();
+   protected:
+    Application();
 
    private:
     void OnEvent(Event& event);
@@ -28,8 +34,8 @@ class ANT_API Application {
    private:
     bool isRunning = true;
     std::unique_ptr<Window> window;
+    inline static Application* instance = nullptr;
     LayerStack layerStack;
-
 };
 
 // Implementation in client

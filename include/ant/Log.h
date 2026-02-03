@@ -38,7 +38,7 @@ class ANT_API Log {
 #define ANT_LOG_CORE_ERROR(...) ::AE::Log::GetCoreLogger()->error(__VA_ARGS__)
 #define ANT_LOG_CORE_CRITICAL(...) ::AE::Log::GetCoreLogger()->critical(__VA_ARGS__)
 
-#define ANT_TRACE(...)                   \
+#define ANT_LOG_TRACE(...)                   \
     ::AE::Log::GetClientLogger()->trace( \
         __VA_ARGS__) /* ::AE 直接在全局命名空间查找 */
 #define ANT_LOG_DEBUG(...) ::AE::Log::GetClientLogger()->debug(__VA_ARGS__)

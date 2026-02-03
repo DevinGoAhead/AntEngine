@@ -3,7 +3,7 @@
 #include "ant/Core.h"
 #include "ant/Window.h"
 
-class GLFWwindow;
+struct GLFWwindow;
 
 namespace AE {
 class WindowsWindow : public Window {
@@ -15,10 +15,11 @@ class WindowsWindow : public Window {
     void OnUpdate() override;
     void ShutDown()override;
 
-    bool IsVSync() override { return data.isVSync; }
-    std::uint32_t GetWidth() override {return data.width;}
-    std::uint32_t GetHeight() override {return data.height;}
-    std::string GetTitle() override {return data.title;}
+    bool IsVSync() const override { return data.isVSync; }
+    std::uint32_t GetWidth() const override {return data.width;}
+    std::uint32_t GetHeight() const override {return data.height;}
+    std::string GetTitle() const override {return data.title;}
+    void* GetNativeWindow() const override {return window;}
 
    private:
     void Initial(const WindowProp& winProp);
@@ -33,6 +34,6 @@ class WindowsWindow : public Window {
     };
 
     WindowData data;
-    GLFWwindow* window;
+    GLFWwindow* window = nullptr;
 };
 }  // namespace AE

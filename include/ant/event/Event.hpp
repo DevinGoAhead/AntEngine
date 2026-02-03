@@ -1,7 +1,6 @@
 #pragma once
 
 #include "ant/Core.h"
-#include "ant/Log.h"
 #include <cstdint>
 #include "ant/AntPCH.h"
 

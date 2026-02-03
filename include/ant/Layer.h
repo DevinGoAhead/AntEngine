@@ -16,9 +16,9 @@ class ANT_API Layer {
 
     virtual void OnAttach() {}
 
-    virtual void OnDetach() {}
-
     virtual void OnUpdate() {}
+
+    virtual void OnDetach() {}
 
     virtual void OnImGuiRender() {}
 

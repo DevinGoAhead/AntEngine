@@ -9,6 +9,4 @@ int main() {
     AE::Log::init();
     auto app = AE::CreateApplication();
     app->Run();
-    ANT_LOG_CORE_TRACE("trace information");
-    ANT_LOG_INFO("INFO information");
 }

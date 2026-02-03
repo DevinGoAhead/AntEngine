@@ -1,5 +1,8 @@
 # compile_commands.json
-*更改 Preset 后, 需要将目标(build 路径下) compile_commands.json "拷贝" 一份*
+*以下情况需要将目标 (build 路径下) compile_commands.json "拷贝" 一份*
+- 更改 Preset 后
+- 增加了新的 include_directory
+- 
 ```bash
 # linux 
 # linux-clang-debug -- preset name

@@ -28,8 +28,7 @@
 
 #include <cstdint>
 
-#include "ant/Log.h"
-#include "ant/Assert.h"
+#include "ant/Base.h"
 
 #ifdef ANT_PLATFORM_WINDOWS
 #include <Windows.h>

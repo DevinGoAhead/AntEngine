@@ -23,5 +23,3 @@
 #else
     #define ANT_API ANT_API_IMPORT
 #endif
-
-#define BIT(x) 1U << x

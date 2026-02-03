@@ -2,23 +2,30 @@
 #include "ant/AntPCH.h"
 #include "ant/Layer.h"
 #include "ant/event/EventApplication.hpp"
+#include "ant/Base.h"
 
 #include <GLFW/glfw3.h>
 
-#define ANT_BIND_EVENT_FN(fn)                                   \
-    [this](auto&&... args) -> decltype(auto) {                  \
-        return this->fn(std::forward<decltype(args)>(args)...); \
-    }
 
 namespace AE {
 Application::Application() {
+    ANT_CORE_ASSERT((instance == nullptr), "Application already exists!");
+
     window = AE::Window::CreateAEWindow({});
     window->SetEventCallback(ANT_BIND_EVENT_FN(OnEvent));
+    instance = this;
+}
+
+const Application* Application::Get(){
+    if(instance == nullptr){
+        Application();
+    }
+    return instance;
 }
 
 void Application::Run() {
     while (isRunning) {
-        glClearColor(0.2, 0.5, 0.8, 1.);
+        glClearColor(0.2F, 0.5F, 0.8F, 1.F);
         glClear(GL_COLOR_BUFFER_BIT);
 
         for(const auto& layer : layerStack){
@@ -33,10 +40,12 @@ void Application::Run() {
 
 void Application::AddStage(Layer* stage) {
     layerStack.AddStage(stage);
+    stage->OnAttach();
 }
 
 void Application::AddOverlay(Layer* overlay) {
     layerStack.AddOverlay(overlay);
+    overlay->OnAttach();
 }
 
 void Application::OnEvent(Event& event) {

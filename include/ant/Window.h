@@ -29,10 +29,11 @@ class Window {
     virtual void OnUpdate() = 0;
     virtual void ShutDown() = 0;
 
-    virtual bool IsVSync() = 0;
-    virtual std::uint32_t GetWidth() = 0;
-    virtual std::uint32_t GetHeight() = 0;
-    virtual std::string GetTitle() = 0;
+    virtual bool IsVSync() const = 0;
+    virtual std::uint32_t GetWidth() const = 0;
+    virtual std::uint32_t GetHeight() const = 0;
+    virtual std::string GetTitle() const = 0;
+    virtual void* GetNativeWindow() const = 0;
 
     static std::unique_ptr<Window> CreateAEWindow(
         const WindowProp& winProp);  // Factory

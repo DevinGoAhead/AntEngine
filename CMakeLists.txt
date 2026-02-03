@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.26)
-project(AntEngine VERSION 1.0.0 LANGUAGES C CXX)
+project(ANT_ENGINE VERSION 1.0.0 LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -86,10 +86,12 @@ endfunction()
 # set(GLFW_BUILD_X11 OFF CACHE BOOL "Build support for X11" FORCE)
 set(GLFW_INSTALL OFF CACHE BOOL "Generate installation target")
 
-add_subdirectory(src/ant)
-add_subdirectory(src/sandbox)
+add_subdirectory(src/)
+add_subdirectory(./sandbox)
 add_subdirectory(vendor/spdlog)
 add_subdirectory(vendor/glfw)
+add_subdirectory(vendor/glad)
+add_subdirectory(vendor/imgui)
 
 
 # spdlog
@@ -114,4 +116,17 @@ target_link_libraries(AntGLFW
   INTERFACE
     glfw
 )
+
+add_library(AntGLAD INTERFACE)
+target_link_libraries(AntGLAD
+  INTERFACE
+    glad::glad
+)
+
+add_library(AntIMGUI INTERFACE)
+target_link_libraries(AntIMGUI
+  INTERFACE
+    imgui::imgui
+)
+
 

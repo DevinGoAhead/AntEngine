@@ -4,12 +4,14 @@
 #include "ant/event/KeyEvent.hpp"
 #include "ant/event/MouseEvent.hpp"
 
+#include "glad/glad.h"
 #include "GLFW/glfw3.h"
+
 
 namespace AE {
 static bool isGLFW_Initialized = false;
 
-WindowsWindow::WindowsWindow(const WindowProp &winProp){
+WindowsWindow::WindowsWindow(const WindowProp& winProp) {
     Initial(winProp);
 }
 
@@ -26,17 +28,23 @@ void WindowsWindow::Initial(const WindowProp& winProp) {
             isGLFW_Initialized = true;
         }
     }
-    window = glfwCreateWindow(static_cast<int>(data.width),
-                                           static_cast<int>(data.height),
-                                           data.title.data(), nullptr, nullptr);
 
-    ANT_CORE_ASSERT(window,
-                    "glfwCreateWindow | failed to create window");
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+    window = glfwCreateWindow(static_cast<int>(data.width),
+                              static_cast<int>(data.height), data.title.data(),
+                              nullptr, nullptr);
+
+    ANT_CORE_ASSERT(window, "glfwCreateWindow | failed to create window");
 
     ANT_LOG_CORE_INFO("Create window - title: {}, size: [{} * {}]", data.title,
                       data.width, data.height);
 
     glfwMakeContextCurrent(window);
+    auto status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+    ANT_CORE_ASSERT(status, "LoadGLLoader failed!");
     SetVSync(true);
     glfwSetWindowUserPointer(window, &data);
 
@@ -44,7 +52,7 @@ void WindowsWindow::Initial(const WindowProp& winProp) {
      * bind callback
      */
     glfwSetWindowSizeCallback(window, [](GLFWwindow* window, int width,
-                                                int height) {
+                                         int height) {
         if (auto* data =
                 static_cast<WindowData*>(glfwGetWindowUserPointer(window))) {
             data->width = width;
@@ -64,9 +72,8 @@ void WindowsWindow::Initial(const WindowProp& winProp) {
     });
 
     glfwSetKeyCallback(window, [](GLFWwindow* window, int key,
-                                         [[maybe_unused]] int scancode,
-                                         int action,
-                                         [[maybe_unused]] int mods) {
+                                  [[maybe_unused]] int scancode, int action,
+                                  [[maybe_unused]] int mods) {
         if (auto* data =
                 static_cast<WindowData*>(glfwGetWindowUserPointer(window))) {
             switch (action) {
@@ -93,8 +100,8 @@ void WindowsWindow::Initial(const WindowProp& winProp) {
     });
 
     glfwSetMouseButtonCallback(window, [](GLFWwindow* window, int button,
-                                                 int action,
-                                                 [[maybe_unused]] int mods) {
+                                          int action,
+                                          [[maybe_unused]] int mods) {
         if (auto* data =
                 static_cast<WindowData*>(glfwGetWindowUserPointer(window))) {
             switch (action) {
@@ -116,7 +123,7 @@ void WindowsWindow::Initial(const WindowProp& winProp) {
     });
 
     glfwSetScrollCallback(window, [](GLFWwindow* window, double xoffset,
-                                            double yoffset) {
+                                     double yoffset) {
         if (auto* data =
                 static_cast<WindowData*>(glfwGetWindowUserPointer(window))) {
             MouseScrolledEvent mouseScrolledEvent{static_cast<float>(xoffset),
@@ -126,7 +133,7 @@ void WindowsWindow::Initial(const WindowProp& winProp) {
     });
 
     glfwSetCursorPosCallback(window, [](GLFWwindow* window, double xpos,
-                                               double ypos) {
+                                        double ypos) {
         if (auto* data =
                 static_cast<WindowData*>(glfwGetWindowUserPointer(window))) {
             MouseMoveEvent mouseMoveEvent{static_cast<float>(xpos),
@@ -136,9 +143,10 @@ void WindowsWindow::Initial(const WindowProp& winProp) {
     });
 }
 
- void WindowsWindow::SetEventCallback(const EventCallback& callback){
+void WindowsWindow::SetEventCallback(const EventCallback& callback) {
     data.eventCallback = callback;
- }
+}
+
 void WindowsWindow::SetVSync(bool enable) {
     if (enable) {
         glfwSwapInterval(1);
