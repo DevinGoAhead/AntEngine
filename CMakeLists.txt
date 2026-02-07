@@ -4,9 +4,12 @@ project(ANT_ENGINE VERSION 1.0.0 LANGUAGES C CXX)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin/$<CONFIG>-${CMAKE_SYSTEM_NAME}-${CMAKE_SYSTEM_PROCESSOR}/") # 可执行程序
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin/$<CONFIG>-${CMAKE_SYSTEM_NAME}-${CMAKE_SYSTEM_PROCESSOR}/") # shared lib
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/lib/$<CONFIG>-${CMAKE_SYSTEM_NAME}-${CMAKE_SYSTEM_PROCESSOR}/") # static lib + win 动态库配套的 import lib
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY
+  "${CMAKE_SOURCE_DIR}/bin/$<CONFIG>-${CMAKE_SYSTEM_NAME}-${CMAKE_SYSTEM_PROCESSOR}/") # 可执行程序
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY
+  "${CMAKE_SOURCE_DIR}/bin/$<CONFIG>-${CMAKE_SYSTEM_NAME}-${CMAKE_SYSTEM_PROCESSOR}/") # shared lib
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY
+  "${CMAKE_SOURCE_DIR}/lib/$<CONFIG>-${CMAKE_SYSTEM_NAME}-${CMAKE_SYSTEM_PROCESSOR}/") # static lib + win 动态库配套的 import lib
 
 option(ANT_WARNINGS "Enable common compiler warnings" ON)
 option(ANT_WERROR "Treat warnings as errors" OFF)
@@ -85,6 +88,7 @@ endfunction()
 ### 我自己的机器是 wayland, 所以我关掉了 x11
 # set(GLFW_BUILD_X11 OFF CACHE BOOL "Build support for X11" FORCE)
 set(GLFW_INSTALL OFF CACHE BOOL "Generate installation target")
+add_compile_options(/wd4251)
 
 add_subdirectory(src/)
 add_subdirectory(./sandbox)
@@ -128,5 +132,4 @@ target_link_libraries(AntIMGUI
   INTERFACE
     imgui::imgui
 )
-
 

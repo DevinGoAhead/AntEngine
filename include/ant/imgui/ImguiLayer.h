@@ -3,7 +3,6 @@
 #include "ant/Core.h"
 #include "ant/Layer.h"
 
-
 namespace AE {
 class ANT_API ImguiLayer : public Layer {
    public:
@@ -18,5 +17,8 @@ class ANT_API ImguiLayer : public Layer {
     void OnImGuiRender() override;
 
     void OnEvent([[maybe_unused]] Event& event) override;
+
+   private:
+    bool blockEvent;
 };
 }  // namespace AE

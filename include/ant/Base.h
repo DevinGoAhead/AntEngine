@@ -9,8 +9,4 @@
     [this](auto&&... args) -> decltype(auto) {                  \
         return this->fn(std::forward<decltype(args)>(args)...); \
     }
-
-
-#include "ant/Log.h"
-#include "ant/Assert.h"
 // IWYU pragma: end_exports

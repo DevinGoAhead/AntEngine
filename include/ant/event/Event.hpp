@@ -1,8 +1,8 @@
 #pragma once
 
-#include "ant/Core.h"
 #include <cstdint>
 #include "ant/AntPCH.h"
+#include "ant/Core.h"
 
 namespace AE {
 
@@ -44,7 +44,7 @@ enum Type : std::uint8_t {
         return GetStaticType();                                   \
     }                                                             \
     [[nodiscard]] std::string_view GetTypeName() const override { \
-        return #type; /* 常量, 静态区 */                     \
+        return #type; /* 常量, 静态区 */                          \
     }
 
 #define CLASS_EVENT_CATEGORY_TYPE(category) \
@@ -59,6 +59,10 @@ class ANT_API Event {
     virtual EventType GetEventType() const = 0;
     virtual std::string_view GetTypeName() const = 0;
     virtual int GetEventCategory() const = 0;
+
+    bool IsInCategory(EventCategory::Type category) const {
+        return (GetEventCategory() & category) != 0;
+    }
 
     virtual std::string ToString() const { return GetTypeName().data(); }
 

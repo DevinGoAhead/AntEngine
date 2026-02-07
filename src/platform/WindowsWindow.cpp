@@ -1,5 +1,6 @@
 #include "platform/WindowsWindow.h"
 #include "ant/AntPCH.h"
+#include "ant/Ant.h"
 #include "ant/event/EventApplication.hpp"
 #include "ant/event/KeyEvent.hpp"
 #include "ant/event/MouseEvent.hpp"

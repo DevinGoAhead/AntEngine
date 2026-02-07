@@ -1,6 +1,5 @@
 #include "ant/Ant.h"
-#include "ant/Layer.h"
-#include "ant/imgui/ImguiLayer.h"
+#include "ant/EntryPoint.h" // IWYU pragma: keep
 
 using namespace AE;
 

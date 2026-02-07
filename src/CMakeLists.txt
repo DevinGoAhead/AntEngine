@@ -9,6 +9,9 @@ add_library(ant
         ant/imgui/ImguiLayer.cpp
 
         platform/WindowsWindow.cpp
+        platform/WindowsInput.cpp
+
+        ${PROJECT_SOURCE_DIR}/include/ant/Input.hpp
 )
 
 target_include_directories(ant 

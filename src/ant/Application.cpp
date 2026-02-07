@@ -1,8 +1,10 @@
 #include "ant/Application.h"
 #include "ant/AntPCH.h"
+#include "ant/Ant.h"
 #include "ant/Layer.h"
 #include "ant/event/EventApplication.hpp"
-#include "ant/Base.h"
+#include "ant/Input.hpp"
+
 
 #include <GLFW/glfw3.h>
 
@@ -31,6 +33,8 @@ void Application::Run() {
         for(const auto& layer : layerStack){
             layer->OnUpdate();
         }
+        auto [x, y] = Input::GetMousePos();
+        ANT_LOG_CORE_TRACE("Mouse Position: [{}, {}]", x, y);
 
         if (window) {
             window->OnUpdate();
@@ -52,11 +56,12 @@ void Application::OnEvent(Event& event) {
     ANT_LOG_CORE_TRACE("{}", event.ToString());
 
     EventDispatcher eventDispather(event);
+    // 只有这两个由 Ant Engine 控制, 并且会将 bHandeld 置为 true, 此时其他层的这俩事件 (假设有) 将不会得到响应
     eventDispather.Dispatch<WindowCloseEvent>(ANT_BIND_EVENT_FN(OnWindowClose));
     eventDispather.Dispatch<WindowResizeEvent>(
         ANT_BIND_EVENT_FN(OnWindowResize));
-
-    for (AE::Layer* layer : layerStack | std::views::reverse) {
+    // imgui 会接管诸多事件,  imgui 内部依然会备份并执行 Ant 所设置的 glfw 回调
+    for (auto* layer : layerStack | std::views::reverse) {
         if (event.bHandled) {
             break;
         }

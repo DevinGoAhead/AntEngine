@@ -1,7 +1,7 @@
 
 #include "ant/imgui/ImguiLayer.h"
 #include "ant/AntPCH.h"  // IWYU pragma: keep
-#include "ant/Application.h"
+#include "ant/Ant.h"
 #include "platform/WindowsWindow.h"
 
 #include "imgui.h"
@@ -13,23 +13,23 @@ void ImguiLayer::OnAttach() {
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
 
-    auto& imguiIO = ImGui::GetIO();
+    auto& io = ImGui::GetIO();
 
-    imguiIO.ConfigFlags |=
+    io.ConfigFlags |=
         ImGuiConfigFlags_NavEnableKeyboard;  // Enable Keyboard Controls
-    imguiIO.ConfigFlags |=
+    io.ConfigFlags |=
         ImGuiConfigFlags_NavEnableGamepad;  // Enable Gamepad Controls
-    imguiIO.ConfigFlags |=
+    io.ConfigFlags |=
         ImGuiConfigFlags_DockingEnable;  // IF using Docking Branch
-    imguiIO.BackendFlags |= ImGuiBackendFlags_HasMouseCursors;
-    imguiIO.BackendFlags |= ImGuiBackendFlags_HasSetMousePos;
+    io.BackendFlags |= ImGuiBackendFlags_HasMouseCursors;
+    io.BackendFlags |= ImGuiBackendFlags_HasSetMousePos;
 
     // Setup Platform/Renderer backends
     auto* myWindow = Application::Get()->GetWidnow().GetNativeWindow();
     ANT_CORE_ASSERT((myWindow != nullptr), "NativeWindow is null");
 
     // false: imgui will not set glfwCallbak
-    ImGui_ImplGlfw_InitForOpenGL(static_cast<GLFWwindow*>(myWindow), false);
+    ImGui_ImplGlfw_InitForOpenGL(static_cast<GLFWwindow*>(myWindow), true);
     ImGui_ImplOpenGL3_Init("#version 460");
 }
 
@@ -56,20 +56,16 @@ void ImguiLayer::OnDetach() {
 void ImguiLayer::OnImGuiRender() {}
 
 void ImguiLayer::OnEvent([[maybe_unused]] Event& event) {
-    // 假设你有这样的调度器
-    // EventDispatcher dispatcher(e);
-
-    // // 如果是鼠标按键事件，就手动调 ImGui 的处理函数
-    // dispatcher.Dispatch<MouseButtonPressedEvent>([this](MouseButtonPressedEvent& e) {
-    //     ImGui_ImplGlfw_MouseButtonCallback(window, e.GetButton(), GLFW_PRESS, 0);
-    //     return false; // 是否拦截看你的需求
-    // });
-
-    // // 键盘事件同理
-    // dispatcher.Dispatch<KeyPressedEvent>([this](KeyPressedEvent& e) {
-    //     ImGui_ImplGlfw_KeyCallback(window, e.GetKeyCode(), GLFW_PRESS, 0, 0);
-    //     return false;
-    // });
+    if (blockEvent) {  // 此时将允许 imgui 拦截事件,
+        auto io = ImGui::GetIO();
+        // 只在鼠标键盘相关事件中, 且 imgui 确实想要拦截的时候才会拦截, 否则穿透 imgui, 其它层会继续响应该 event
+        event.bHandled |=
+            (event.IsInCategory(EventCategory::Type::EventCategoryMouse) &&
+             io.WantCaptureMouse);
+        event.bHandled |=
+            (event.IsInCategory(EventCategory::Type::EventCategoryKeyboard) &&
+             io.WantCaptureKeyboard);
+    }
 }
 
 }  // namespace AE
