@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.26)
+cmake_minimum_required(VERSION 3.16...3.28)
 project(ANT_ENGINE VERSION 1.0.0 LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 20)
@@ -90,12 +90,12 @@ endfunction()
 set(GLFW_INSTALL OFF CACHE BOOL "Generate installation target")
 add_compile_options(/wd4251)
 
-add_subdirectory(src/)
-add_subdirectory(./sandbox)
+
 add_subdirectory(vendor/spdlog)
 add_subdirectory(vendor/glfw)
 add_subdirectory(vendor/glad)
 add_subdirectory(vendor/imgui)
+add_subdirectory(vendor/glm)
 
 
 # spdlog
@@ -109,27 +109,7 @@ set_target_properties(spdlog PROPERTIES POSITION_INDEPENDENT_CODE ON)
 add_library(AntDeps INTERFACE)
 
 find_package(OpenGL REQUIRED)
-target_link_libraries(AntDeps
-  INTERFACE
-    spdlog::spdlog
-    OpenGL::GL
-)
 
-add_library(AntGLFW INTERFACE)
-target_link_libraries(AntGLFW
-  INTERFACE
-    glfw
-)
-
-add_library(AntGLAD INTERFACE)
-target_link_libraries(AntGLAD
-  INTERFACE
-    glad::glad
-)
-
-add_library(AntIMGUI INTERFACE)
-target_link_libraries(AntIMGUI
-  INTERFACE
-    imgui::imgui
-)
+add_subdirectory(src/)
+add_subdirectory(./sandbox)
 

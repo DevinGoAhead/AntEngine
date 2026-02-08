@@ -1,8 +1,9 @@
 
 #include "ant/imgui/ImguiLayer.h"
-#include "ant/AntPCH.h"  // IWYU pragma: keep
+#include "GLFW/glfw3.h"
 #include "ant/Ant.h"
-#include "platform/WindowsWindow.h"
+#include "ant/AntPCH.h"  // IWYU pragma: keep
+#include "platform/WindowsWindow.h" // IWYU pragma: keep
 
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
@@ -19,10 +20,26 @@ void ImguiLayer::OnAttach() {
         ImGuiConfigFlags_NavEnableKeyboard;  // Enable Keyboard Controls
     io.ConfigFlags |=
         ImGuiConfigFlags_NavEnableGamepad;  // Enable Gamepad Controls
+    io.ConfigFlags |= ImGuiBackendFlags_HasGamepad;
+
     io.ConfigFlags |=
         ImGuiConfigFlags_DockingEnable;  // IF using Docking Branch
+
+    io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;  // Eneble Viewports
+    io.BackendFlags |= ImGuiBackendFlags_PlatformHasViewports;
+    io.BackendFlags |= ImGuiBackendFlags_RendererHasViewports;
+
     io.BackendFlags |= ImGuiBackendFlags_HasMouseCursors;
     io.BackendFlags |= ImGuiBackendFlags_HasSetMousePos;
+
+    ImGui::StyleColorsDark();  //set style
+    
+
+    if ((io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) != 0) {
+        auto style = ImGui::GetStyle();
+        style.WindowRounding = 0.F; // 当拖拽到原始窗口外, 不使用圆角
+        style.Colors[ImGuiCol_WindowBg].w = 1.F; // 当拖拽到原始窗口外, 完全不透明
+    }
 
     // Setup Platform/Renderer backends
     auto* myWindow = Application::Get()->GetWidnow().GetNativeWindow();
@@ -33,27 +50,18 @@ void ImguiLayer::OnAttach() {
     ImGui_ImplOpenGL3_Init("#version 460");
 }
 
-void ImguiLayer::OnUpdate() {
-    // Start the Dear ImGui frame
-    ImGui_ImplOpenGL3_NewFrame();
-    ImGui_ImplGlfw_NewFrame();
-    ImGui::NewFrame();
-    ImGui::ShowDemoWindow();  // Show demo window! :)
-
-    // Rendering
-    // (Your code clears your framebuffer, renders your other stuff etc.)
-    ImGui::Render();
-    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-    // (Your code calls glfwSwapBuffers() etc.)
-}
-
 void ImguiLayer::OnDetach() {
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
 }
 
-void ImguiLayer::OnImGuiRender() {}
+void ImguiLayer::OnImGuiRender() {
+    // 只有第 1 帧的时候初始化, 后面跳过
+    // 后面每一帧使用的值都将是上一帧 ShowDemoWindow 所设置的值
+    static bool show = true;
+    ImGui::ShowDemoWindow(&show);
+}
 
 void ImguiLayer::OnEvent([[maybe_unused]] Event& event) {
     if (blockEvent) {  // 此时将允许 imgui 拦截事件,
@@ -65,6 +73,32 @@ void ImguiLayer::OnEvent([[maybe_unused]] Event& event) {
         event.bHandled |=
             (event.IsInCategory(EventCategory::Type::EventCategoryKeyboard) &&
              io.WantCaptureKeyboard);
+    }
+}
+
+void ImguiLayer::Begin() {
+    // Start the Dear ImGui frame
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplGlfw_NewFrame();
+    ImGui::NewFrame();
+}
+
+void ImguiLayer::End() {
+    auto io = ImGui::GetIO();
+    const auto& nativeWindow = Application::Get()->GetWidnow();
+    io.DisplaySize = {static_cast<float>(nativeWindow.GetWidth()),
+                      static_cast<float>(nativeWindow.GetHeight())};
+
+    // Rendering
+    // (Your code clears your framebuffer, renders your other stuff etc.)
+    ImGui::Render();
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+    if ((io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) != 0) {
+        auto* backup_current_context = glfwGetCurrentContext();
+        ImGui::UpdatePlatformWindows();
+        ImGui::RenderPlatformWindowsDefault();
+        glfwMakeContextCurrent(backup_current_context);
     }
 }
 

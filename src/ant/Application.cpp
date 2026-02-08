@@ -1,13 +1,14 @@
 #include "ant/Application.h"
-#include "ant/AntPCH.h"
 #include "ant/Ant.h"
+#include "ant/AntPCH.h"
+#include "ant/Input.hpp"
 #include "ant/Layer.h"
 #include "ant/event/EventApplication.hpp"
-#include "ant/Input.hpp"
+#include "ant/imgui/ImguiLayer.h"
 
+#include "GLFW/glfw3.h"  // IWYU pragma: keep local
 
-#include <GLFW/glfw3.h>
-
+//#include "glm/glm.hpp"
 
 namespace AE {
 Application::Application() {
@@ -16,10 +17,13 @@ Application::Application() {
     window = AE::Window::CreateAEWindow({});
     window->SetEventCallback(ANT_BIND_EVENT_FN(OnEvent));
     instance = this;
+
+    imguiLayer = new ImguiLayer("Imgui");
+    AddOverlay(imguiLayer);
 }
 
-const Application* Application::Get(){
-    if(instance == nullptr){
+const Application* Application::Get() {
+    if (instance == nullptr) {
         Application();
     }
     return instance;
@@ -30,9 +34,18 @@ void Application::Run() {
         glClearColor(0.2F, 0.5F, 0.8F, 1.F);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        for(const auto& layer : layerStack){
+        // 这部分参见 Layer::OnImGuiRender 函数的注释
+
+        for (const auto& layer : layerStack) {
             layer->OnUpdate();
         }
+
+        imguiLayer->Begin();
+        for (const auto& layer : layerStack) {
+            layer->OnImGuiRender();
+        }
+        imguiLayer->End();
+
         auto [x, y] = Input::GetMousePos();
         ANT_LOG_CORE_TRACE("Mouse Position: [{}, {}]", x, y);
 
@@ -40,6 +53,10 @@ void Application::Run() {
             window->OnUpdate();
         }
     }
+}
+
+Application::~Application() {
+    delete imguiLayer;
 }
 
 void Application::AddStage(Layer* stage) {

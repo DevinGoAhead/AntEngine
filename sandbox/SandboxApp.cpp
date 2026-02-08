@@ -17,8 +17,7 @@ class MyLayer : public AE::Layer {
 class SandboxApp : public AE::Application {
    public:
     SandboxApp() { 
-        AddStage(new MyLayer{"Mylayer"}); 
-        AddStage(new ImguiLayer{"Imgui Layer"});
+        AddStage(new MyLayer{"Mylayer"});
     }
 
     ~SandboxApp() override = default;

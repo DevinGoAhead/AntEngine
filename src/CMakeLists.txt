@@ -20,15 +20,19 @@ target_include_directories(ant
 
 target_link_libraries(ant 
     PUBLIC 
-        AntDeps
-        AntGLFW
-        AntGLAD
-        AntIMGUI
+        glm::glm
+        spdlog::spdlog
+    PRIVATE
+        OpenGL::GL
+        glfw
+        glad::glad
+        imgui::imgui
 )
 
 target_compile_definitions(ant 
     PRIVATE
         ANT_BUILD
+        IMGUI_API_EXPORT
 )
 
 ant_apply_options(ant)

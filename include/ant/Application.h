@@ -16,7 +16,7 @@ class ANT_API Application {
    public:
     Application(const Application& other) = delete;
     Application& operator=(const Application& other) = delete; 
-    virtual ~Application() = default;
+    virtual ~Application();
 
     void AddStage(Layer* stage);
     void AddOverlay(Layer* overlay);
@@ -34,6 +34,7 @@ class ANT_API Application {
    private:
     bool isRunning = true;
     std::unique_ptr<Window> window;
+    class ImguiLayer* imguiLayer;
     inline static Application* instance = nullptr;
     LayerStack layerStack;
 };

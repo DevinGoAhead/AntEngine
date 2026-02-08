@@ -7,4 +7,9 @@ target_link_libraries(sandbox
         ant
 )
 
+target_compile_definitions(sandbox
+    PRIVATE
+        IMGUI_API_IMPORT
+)
+
 #ant_apply_options(sandbox)

@@ -2,7 +2,7 @@
 
 #include "ant/Core.h"
 
-#include <spdlog/spdlog.h>
+#include "spdlog/spdlog.h" // IWYU pragma: keep
 
 #include <memory>
 
