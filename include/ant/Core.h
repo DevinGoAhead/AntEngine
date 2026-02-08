@@ -20,7 +20,6 @@
   #define ANT_API
 #elif defined(ANT_BUILD)
     #define ANT_API ANT_API_EXPORT
-    #define IMGUI_API 
 #else
     #define ANT_API ANT_API_IMPORT
 #endif

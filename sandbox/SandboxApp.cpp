@@ -7,7 +7,7 @@ class MyLayer : public AE::Layer {
    public:
     MyLayer() = default;
 
-    MyLayer(std::string inLayerName) : Layer(std::move(inLayerName)) {}
+    MyLayer(std::string inLayerName) : Layer(std::move (inLayerName)) {}
 
     void OnEvent(Event& e) override { ANT_LOG_TRACE("MyLayer OnEvent"); }
 

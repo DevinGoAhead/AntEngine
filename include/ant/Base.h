@@ -10,10 +10,14 @@
         return this->fn(std::forward<decltype(args)>(args)...); \
     }
 
+#ifdef IMGUI_API
+#undef IMGUI_API
+#endif
+
 #if defined IMGUI_API_EXPORT
-#define IMGUI_API(dllexport)
+#define IMGUI_API __declspec(dllexport)
 #elif defined(IMGUI_API_IMPORT)
-#define IMGUI_API(dllimport)
+#define IMGUI_API __declspec(dllimport)
 #else
 #define IMGUI_API
 #endif
