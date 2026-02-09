@@ -8,8 +8,9 @@ add_library(ant
 
         ant/imgui/ImguiLayer.cpp
 
-        platform/WindowsWindow.cpp
-        platform/WindowsInput.cpp
+        platform/windows/WindowsWindow.cpp
+        platform/windows/WindowsInput.cpp
+        platform/opengl/OpenGLContext.cpp
 
         ${PROJECT_SOURCE_DIR}/include/ant/Input.hpp
 )

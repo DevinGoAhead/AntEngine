@@ -1,4 +1,4 @@
-#include "platform/WindowsInput.h"
+#include "platform/windows/WindowsInput.h"
 #include "ant/Ant.h"
 #include "GLFW/glfw3.h"
 

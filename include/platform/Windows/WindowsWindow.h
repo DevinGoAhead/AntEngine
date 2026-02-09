@@ -35,5 +35,6 @@ class WindowsWindow : public Window {
 
     WindowData data;
     GLFWwindow* window = nullptr;
+    class GraphicsContext* context;
 };
 }  // namespace AE

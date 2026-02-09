@@ -31,6 +31,9 @@
 #include "ant/Base.h"
 
 #ifdef ANT_PLATFORM_WINDOWS
+#ifdef APIENTRY
+#undef APIENTRY
+#endif
 #include <Windows.h>
 #endif
 

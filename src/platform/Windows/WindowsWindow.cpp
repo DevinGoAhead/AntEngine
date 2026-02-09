@@ -1,12 +1,14 @@
-#include "platform/WindowsWindow.h"
+#include "platform/windows/WindowsWindow.h"
+
+#include "platform/opengl/OpenGLContext.h"
+#include "glad/glad.h"
+#include "GLFW/glfw3.h"
+
 #include "ant/AntPCH.h"
 #include "ant/Ant.h"
 #include "ant/event/EventApplication.hpp"
 #include "ant/event/KeyEvent.hpp"
 #include "ant/event/MouseEvent.hpp"
-
-#include "glad/glad.h"
-#include "GLFW/glfw3.h"
 
 
 namespace AE {
@@ -43,9 +45,11 @@ void WindowsWindow::Initial(const WindowProp& winProp) {
     ANT_LOG_CORE_INFO("Create window - title: {}, size: [{} * {}]", data.title,
                       data.width, data.height);
 
-    glfwMakeContextCurrent(window);
-    auto status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-    ANT_CORE_ASSERT(status, "LoadGLLoader failed!");
+    // glfwMakeContextCurrent(window);
+    // auto status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+    // ANT_CORE_ASSERT(status, "LoadGLLoader failed!");
+    context = new OpenGLContext{window};
+
     SetVSync(true);
     glfwSetWindowUserPointer(window, &data);
 
@@ -159,7 +163,7 @@ void WindowsWindow::SetVSync(bool enable) {
 
 void WindowsWindow::OnUpdate() {
     glfwPollEvents();
-    glfwSwapBuffers(window);
+    context->Swapbuffers();
 }
 
 void WindowsWindow::ShutDown() {

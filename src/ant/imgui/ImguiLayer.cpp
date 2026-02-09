@@ -3,7 +3,7 @@
 #include "GLFW/glfw3.h"
 #include "ant/Ant.h"
 #include "ant/AntPCH.h"  // IWYU pragma: keep
-#include "platform/WindowsWindow.h" // IWYU pragma: keep
+#include "platform/windows/WindowsWindow.h" // IWYU pragma: keep
 
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
